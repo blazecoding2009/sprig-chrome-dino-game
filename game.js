@@ -1,14 +1,23 @@
+/*
+@title: Chrome Dinosaur Game
+@author: @blazecoding.xyz
+@tags: ['classic', 'endless']
+@addedOn: 2024-07-27
+*/
+
 const d = "d";
 const r = "r";
 const c1 = "c";
 const c2 = "e";
 const g = "g";
+const b = "b";
 
 const d1 = "h";
 const r1 = "i";
 const c11 = "j";
 const c21 = "k";
 const g1 = "l";
+const b1 = "m";
 
 // Original color scheme (black on white)
 const bitmapsOriginal = [
@@ -97,7 +106,24 @@ const bitmapsOriginal = [
 ................
 0000000000000000
 0...0....0...0..
-...0..0.0..0..0.`]
+...0..0.0..0..0.`],
+  [b, bitmap`
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222
+2222222222222222`]
 ];
 
 // Inverted color scheme (white on black)
@@ -106,30 +132,30 @@ const bitmapsInverted = [
 ................
 ................
 ................
-..........LLLLL.
-.........LL.LLLL
-.........LLLLLLL
-.L.......LLLLLLL
-.LL......LLLLL..
-.LLL....LLLL....
-.LLLL..LLLLLLL..
-..LLLLLLLLLLL.L.
-...LLLLLLLLL....
-....LLLLLLL.....
-.....LLLLL......
-.....L..L.......
-.....LL.LL......`],
+..........22222.
+.........22.2222
+.........2222222
+.2.......2222222
+.22......22222..
+.222....2222....
+.2222..2222222..
+..22222222222.2.
+...222222222....
+....2222222.....
+.....22222......
+.....2..2.......
+.....22.22......`],
   [r1, bitmap`
-......L.........
-......LL........
-......LLL.......
-......LLLL......
-......LLLLL.....
-...L..LLLLLL....
-..LLL.LLLLLLLLLL
-.LLLLLLLLLLL....
-LLLLLLLLLLLLLLL.
-......LLLLL.....
+......2.........
+......22........
+......222.......
+......2222......
+......22222.....
+...2..222222....
+..222.2222222222
+.22222222222....
+222222222222222.
+......22222.....
 ................
 ................
 ................
@@ -137,39 +163,39 @@ LLLLLLLLLLLLLLL.
 ................
 ................`],
   [c11, bitmap`
-.......LL.......
-......LLLL..L...
-...L..LLLL.LLL..
-..LLL.LLLL.LLL..
-..LLL.LLLL.LLL..
-..LLL.LLLL.LLL..
-..LLL.LLLL.LLL..
-..LLL.LLLLLLLL..
-..LLL.LLLLLLLL..
-..LLL.LLLLLLL...
-..LLLLLLLL......
-..LLLLLLLL......
-...LLLLLLL......
-......LLLL..LLL.
-LLLLLLLLLLLLL.LL
-L22.L.LLLL...L..`],
+.......22.......
+......2222..2...
+...2..2222.222..
+..222.2222.222..
+..222.2222.222..
+..222.2222.222..
+..222.2222.222..
+..222.22222222..
+..222.22222222..
+..222.2222222...
+..22222222......
+..22222222......
+...2222222......
+......2222..222.
+2222222222222.22
+222.2.2222...2..`],
   [c21, bitmap`
-.....L..........
-....LLL.........
-....LLL.L...L...
-..L.LLL.L..LLL..
-..L.LLL.L..LLL.L
-..L.LLL.L..LLL.L
-..L.LLL.L..LLL.L
-..L.LLL.L..LLL.L
-..L.LLLLL..LLL.L
-..L.LLL....LLL.L
-..L.LLL..L.LLLLL
-..LLLLL..L.LLL..
-....LLL..LLLLL..
-LLL.LLL....LLL..
-L.LLLLL.LLLLLLLL
-....LLLLLL.LLL..`],
+.....2..........
+....222.........
+....222.2...2...
+..2.222.2..222..
+..2.222.2..222.2
+..2.222.2..222.2
+..2.222.2..222.2
+..2.222.2..222.2
+..2.22222..222.2
+..2.222....222.2
+..2.222..2.22222
+..22222..2.222..
+....222..22222..
+222.222....222..
+2.22222.22222222
+....222222.222..`],
   [g1, bitmap`
 ................
 ................
@@ -185,98 +211,37 @@ L.LLLLL.LLLLLLLL
 ................
 ................
 ................
-LLLLLLLLLLLLLLLL
-L...L....L...L..
-...L..L.L..L..L.`]
+................
+2222222222222222
+2...2....2...2..
+...2..2.2..2..2.`],
+  [b1, bitmap`
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000
+0000000000000000`],
+  
 ];
 
 setLegend(
-  [d, bitmap`
-................
-................
-................
-..........00000.
-.........00.0000
-.........0000000
-.0.......0000000
-.00......00000..
-.000....0000....
-.0000..0000000..
-..00000000000.0.
-...000000000....
-....0000000.....
-.....00000......
-.....0..0.......
-.....00.00......`],
-  [r, bitmap`
-......0.........
-......00........
-......000.......
-......0000......
-......00000.....
-...0..000000....
-..000.0000000000
-.00000000000....
-000000000000000.
-......00000.....
-................
-................
-................
-................
-................
-................`],
-  [c1, bitmap`
-.......00.......
-......0000..0...
-...0..0000.000..
-..000.0000.000..
-..000.0000.000..
-..000.0000.000..
-..000.0000.000..
-..000.00000000..
-..000.00000000..
-..000.0000000...
-..00000000......
-..00000000......
-...0000000......
-......0000..000.
-0000000000000.00
-022.0.0000...0..`],
-  [c2, bitmap`
-.....0..........
-....000.........
-....000.0...0...
-..0.000.0..000..
-..0.000.0..000.0
-..0.000.0..000.0
-..0.000.0..000.0
-..0.000.0..000.0
-..0.00000..000.0
-..0.000....000.0
-..0.000..0.00000
-..00000..0.000..
-....000..00000..
-000.000....000..
-0.000000.0000000
-....000000.000..`],
-  [g, bitmap`
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-................
-0000000000000000
-0...0....0...0..
-...0..0.0..0..0.`]
+  [d, bitmapsOriginal[0][1]],
+  [r, bitmapsOriginal[1][1]],
+  [c1, bitmapsOriginal[2][1]],
+  [c2, bitmapsOriginal[3][1]],
+  [g, bitmapsOriginal[4][1]],
+  [b, bitmapsOriginal[5][1]]
 );
 
 const jumpSound = tune`
@@ -292,6 +257,7 @@ const scoreSound = tune`
 100: b4^500, b4^500, b4^500, b4^500`;
 
 let runmap = map`
+........
 ........
 dggggggg`;
 
@@ -313,16 +279,33 @@ let jump_timer;
 let playing = 0;
 let score = 0;
 let waiting = false;
-let speed_increment = 0;
+let speed_increment = 2;
 let obstacle_distance = 5;
 let currentScheme = 0;
 
 function switchColors() {
+    console.log("Switching colors");
     if (currentScheme === 0) {
-        setLegend(...bitmapsInverted);
+        setLegend(
+            [d, bitmapsInverted[0][1]],
+            [r, bitmapsInverted[1][1]],
+            [c1, bitmapsInverted[2][1]],
+            [c2, bitmapsInverted[3][1]],
+            [g, bitmapsInverted[4][1]],
+            [b, bitmapsInverted[5][1]]
+          
+        );
         currentScheme = 1;
     } else {
-        setLegend(...bitmapsOriginal);
+        setLegend(
+            [d, bitmapsOriginal[0][1]],
+            [r, bitmapsOriginal[1][1]],
+            [c1, bitmapsOriginal[2][1]],
+            [c2, bitmapsOriginal[3][1]],
+            [g, bitmapsOriginal[4][1]],
+            [b, bitmapsOriginal[5][1]]
+
+        );
         currentScheme = 0;
     }
 }
@@ -330,9 +313,11 @@ function switchColors() {
 function do_jump() {
     if (jump === 1) return;
     else {
+        let dSprite = getFirst(d);
+        if (dSprite === undefined) return;
         if (top_map[0] === r) game_over();
-        if (getFirst(d).y === 1) {
-            getFirst(d).y -= 1;
+        if (dSprite.y === 1) {
+            dSprite.y -= 1;
             jump = 1;
             jump_timer = setTimeout(end_jump, jump_time);
             playTune(jumpSound);
@@ -341,8 +326,10 @@ function do_jump() {
 }
 
 function end_jump() {
-    if (getFirst(d).y === 0) {
-        getFirst(d).y += 1;
+    let dSprite = getFirst(d);
+    if (dSprite === undefined) return;
+    if (dSprite.y === 0) {
+        dSprite.y += 1;
         jump = 0;
     }
 }
@@ -350,18 +337,14 @@ function end_jump() {
 onInput("w", () => {
     if (playing === 0 && !waiting) {
         playing = 1;
-        addText("                   ", {
-            x: 0,
-            y: 2,
-            color: color`3`
-        });
         top_map = "........";
         bot_map = "gggggggg";
-        runmap = top_map + "\n" + bot_map;
+        runmap = `${top_map} \n ${bot_map}`;
         setMap(runmap);
         addSprite(0, 1, d);
         jump = 0;
         tick();
+        clearText();
     } else if (!waiting) do_jump();
 });
 
@@ -384,7 +367,8 @@ function tick() {
     }
     top_map = top_map.slice(1) + top_next;
     bot_map = bot_map.slice(1) + next;
-    runmap = top_map + "\n" + bot_map;
+    runmap = `${top_map} \n ${bot_map}`;
+    console.log(`Setting map to: \n${runmap}`);
     setMap(runmap);
     if (jump === 0) {
         if (bot_map[0] !== g) return game_over();
@@ -404,10 +388,10 @@ function tick() {
     if (score % 100 === 0) playTune(scoreSound);
     if (score % 10 === 0) switchColors();
     
-    addText("Score: " + score.toString(), {
+    addText("    Score: " + score.toString(), {
         x: 2,
         y: 4,
-        color: color`3`
+        color: color`2`
     });
     tick_timer = setTimeout(tick, time);
 }
@@ -417,21 +401,22 @@ function game_over() {
     clearTile(0, 0);
     clearTile(0, 1);
     clearTimeout(tick_timer);
-    addText("Press w to Start", {
-        x: 2,
+    addText("Press W to restart", {
+        x: 1,
         y: 4,
-        color: color`3`
+        color: color`2`
     });
-    addText("Score: " + score.toString(), {
+    addText("    Score: " + score.toString(), {
         x: 2,
-        y: 6,
-        color: color`3`
+        y: 2,
+        color: color`2`
     });
+    score = 0;
     playTune(gameOverSound);
 }
-
 addText("Press W to start", {
     x: 2,
     y: 2,
     color: color`2`
 });
+setBackground("b");
