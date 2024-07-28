@@ -1,18 +1,18 @@
-/*
-@title: Chrome Dinosaur Game
-@author: @blazecoding.xyz
-@tags: ['classic']
-@addedOn: 2024-07-27
-*/
+const d = "d";
+const r = "r";
+const c1 = "c";
+const c2 = "e";
+const g = "g";
 
-const dino = "d";
-const ptero = "r";
-const cactus1 = "0";
-const cactus2 = "2";
-const ground = "g";
+const d1 = "h";
+const r1 = "i";
+const c11 = "j";
+const c21 = "k";
+const g1 = "l";
 
-setLegend(
-  [dino, bitmap`
+// Original color scheme (black on white)
+const bitmapsOriginal = [
+  [d, bitmap`
 ................
 ................
 ................
@@ -29,7 +29,7 @@ setLegend(
 .....00000......
 .....0..0.......
 .....00.00......`],
-  [ptero, bitmap`
+  [r, bitmap`
 ......0.........
 ......00........
 ......000.......
@@ -46,7 +46,7 @@ setLegend(
 ................
 ................
 ................`],
-  [cactus1, bitmap`
+  [c1, bitmap`
 .......00.......
 ......0000..0...
 ...0..0000.000..
@@ -63,7 +63,7 @@ setLegend(
 ......0000..000.
 0000000000000.00
 022.0.0000...0..`],
-  [cactus2, bitmap`
+  [c2, bitmap`
 .....0..........
 ....000.........
 ....000.0...0...
@@ -80,7 +80,187 @@ setLegend(
 000.000....000..
 0.000000.0000000
 ....000000.000..`],
-  [ground, bitmap`
+  [g, bitmap`
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+0000000000000000
+0...0....0...0..
+...0..0.0..0..0.`]
+];
+
+// Inverted color scheme (white on black)
+const bitmapsInverted = [
+  [d1, bitmap`
+................
+................
+................
+..........LLLLL.
+.........LL.LLLL
+.........LLLLLLL
+.L.......LLLLLLL
+.LL......LLLLL..
+.LLL....LLLL....
+.LLLL..LLLLLLL..
+..LLLLLLLLLLL.L.
+...LLLLLLLLL....
+....LLLLLLL.....
+.....LLLLL......
+.....L..L.......
+.....LL.LL......`],
+  [r1, bitmap`
+......L.........
+......LL........
+......LLL.......
+......LLLL......
+......LLLLL.....
+...L..LLLLLL....
+..LLL.LLLLLLLLLL
+.LLLLLLLLLLL....
+LLLLLLLLLLLLLLL.
+......LLLLL.....
+................
+................
+................
+................
+................
+................`],
+  [c11, bitmap`
+.......LL.......
+......LLLL..L...
+...L..LLLL.LLL..
+..LLL.LLLL.LLL..
+..LLL.LLLL.LLL..
+..LLL.LLLL.LLL..
+..LLL.LLLL.LLL..
+..LLL.LLLLLLLL..
+..LLL.LLLLLLLL..
+..LLL.LLLLLLL...
+..LLLLLLLL......
+..LLLLLLLL......
+...LLLLLLL......
+......LLLL..LLL.
+LLLLLLLLLLLLL.LL
+L22.L.LLLL...L..`],
+  [c21, bitmap`
+.....L..........
+....LLL.........
+....LLL.L...L...
+..L.LLL.L..LLL..
+..L.LLL.L..LLL.L
+..L.LLL.L..LLL.L
+..L.LLL.L..LLL.L
+..L.LLL.L..LLL.L
+..L.LLLLL..LLL.L
+..L.LLL....LLL.L
+..L.LLL..L.LLLLL
+..LLLLL..L.LLL..
+....LLL..LLLLL..
+LLL.LLL....LLL..
+L.LLLLL.LLLLLLLL
+....LLLLLL.LLL..`],
+  [g1, bitmap`
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+................
+LLLLLLLLLLLLLLLL
+L...L....L...L..
+...L..L.L..L..L.`]
+];
+
+setLegend(
+  [d, bitmap`
+................
+................
+................
+..........00000.
+.........00.0000
+.........0000000
+.0.......0000000
+.00......00000..
+.000....0000....
+.0000..0000000..
+..00000000000.0.
+...000000000....
+....0000000.....
+.....00000......
+.....0..0.......
+.....00.00......`],
+  [r, bitmap`
+......0.........
+......00........
+......000.......
+......0000......
+......00000.....
+...0..000000....
+..000.0000000000
+.00000000000....
+000000000000000.
+......00000.....
+................
+................
+................
+................
+................
+................`],
+  [c1, bitmap`
+.......00.......
+......0000..0...
+...0..0000.000..
+..000.0000.000..
+..000.0000.000..
+..000.0000.000..
+..000.0000.000..
+..000.00000000..
+..000.00000000..
+..000.0000000...
+..00000000......
+..00000000......
+...0000000......
+......0000..000.
+0000000000000.00
+022.0.0000...0..`],
+  [c2, bitmap`
+.....0..........
+....000.........
+....000.0...0...
+..0.000.0..000..
+..0.000.0..000.0
+..0.000.0..000.0
+..0.000.0..000.0
+..0.000.0..000.0
+..0.00000..000.0
+..0.000....000.0
+..0.000..0.00000
+..00000..0.000..
+....000..00000..
+000.000....000..
+0.000000.0000000
+....000000.000..`],
+  [g, bitmap`
+................
 ................
 ................
 ................
@@ -111,42 +291,48 @@ const scoreSound = tune`
 100: a4^500, a4^500, a4^500, a4^500, 
 100: b4^500, b4^500, b4^500, b4^500`;
 
-var runmap = map`
+let runmap = map`
 ........
 dggggggg`;
 
 setMap(runmap);
 
-var const_time = 500;
-var time = const_time;
-var const_jump_time = 800;
-var jump_time = 800;
-var min_time = 200;
-var jump = 0;
-var top_map = "........";
-var bot_map = "ggCggggg";
-var top_next = ".";
-var next = ".";
-var top_first = ".";
-var bot_first = ".";
-var last = ground;
-var tick_timer;
-var jump_timer;
-var playing = 0;
-var score = 0;
-var waiting = false;
-var speed_increment = 0;
-var obstacle_distance = 5;
+let const_time = 500;
+let time = const_time;
+let const_jump_time = 800;
+let jump_time = 800;
+let min_time = 200;
+let jump = 0;
+let top_map = "........";
+let bot_map = "gggggggg";
+let top_next = ".";
+let next = ".";
+let last = g;
+let tick_timer;
+let jump_timer;
+let playing = 0;
+let score = 0;
+let waiting = false;
+let speed_increment = 0;
+let obstacle_distance = 5;
+let currentScheme = 0;
+
+function switchColors() {
+    if (currentScheme === 0) {
+        setLegend(...bitmapsInverted);
+        currentScheme = 1;
+    } else {
+        setLegend(...bitmapsOriginal);
+        currentScheme = 0;
+    }
+}
 
 function do_jump() {
-    if (jump === 1) {
-        return;
-    } else {
-        if (top_map[0] === ptero) {
-            game_over();
-        }
-        if (getFirst(dino).y === 1) {
-            getFirst(dino).y -= 1;
+    if (jump === 1) return;
+    else {
+        if (top_map[0] === r) game_over();
+        if (getFirst(d).y === 1) {
+            getFirst(d).y -= 1;
             jump = 1;
             jump_timer = setTimeout(end_jump, jump_time);
             playTune(jumpSound);
@@ -155,8 +341,8 @@ function do_jump() {
 }
 
 function end_jump() {
-    if (getFirst(dino).y === 0) {
-        getFirst(dino).y += 1;
+    if (getFirst(d).y === 0) {
+        getFirst(d).y += 1;
         jump = 0;
     }
 }
@@ -167,34 +353,32 @@ onInput("w", () => {
         addText("                   ", {
             x: 0,
             y: 2,
-            color: color`0`
+            color: color`3`
         });
         top_map = "........";
         bot_map = "gggggggg";
         runmap = top_map + "\n" + bot_map;
         setMap(runmap);
-        addSprite(0, 1, dino);
+        addSprite(0, 1, d);
         jump = 0;
         tick();
-    } else if (!waiting) {
-        do_jump();
-    }
+    } else if (!waiting) do_jump();
 });
 
 function tick() {
     top_next = ".";
     switch (last) {
-        case ground:
-            var options = [ground, ground, ground, ground, ground, ground, cactus1, cactus2, ptero];
+        case g:
+            let options = [g, g, g, g, g, g, c1, c2, r];
             next = options[Math.floor(Math.random() * options.length)];
             last = next;
-            if (next === ptero) {
-                top_next = ptero;
-                next = ground;
+            if (next === r) {
+                top_next = r;
+                next = g;
             }
             break;
         default:
-            next = ground;
+            next = g;
             last = next;
             break;
     }
@@ -203,53 +387,47 @@ function tick() {
     runmap = top_map + "\n" + bot_map;
     setMap(runmap);
     if (jump === 0) {
-        if (bot_map[0] !== ground) {
-            game_over();
-            return;
-        }
-        addSprite(0, 1, dino);
+        if (bot_map[0] !== g) return game_over();
+        addSprite(0, 1, d);
     } else {
-        if (top_map[0] === ptero) {
-            game_over();
-            return;
-        }
-        addSprite(0, 0, dino);
+        if (top_map[0] === r) return game_over();
+        addSprite(0, 0, d);
     }
     if (time > min_time) {
-        time -= 10;
-        jump_time -= 10;
-        speed_increment += 1;
-        if (score % 1000 === 0) {
-            obstacle_distance = Math.max(3, obstacle_distance - 1);
+        speed_increment++;
+        if (speed_increment > obstacle_distance) {
+            time = time - 10;
+            speed_increment = 0;
         }
     }
-    score += const_time - time;
-    addText(String(1000000 + score).slice(1), {
-        x: 7,
-        y: 12,
-        color: color`2`
+    score++;
+    if (score % 100 === 0) playTune(scoreSound);
+    if (score % 10 === 0) switchColors();
+    
+    addText("Score: " + score.toString(), {
+        x: 2,
+        y: 4,
+        color: color`3`
     });
-    playTune(scoreSound);
-    tick_timer = setTimeout(tick, time - speed_increment);
+    tick_timer = setTimeout(tick, time);
 }
 
 function game_over() {
-    clearTimeout(tick_timer);
-    clearTimeout(jump_timer);
     playing = 0;
-    score = 0;
-    time = const_time;
-    jump_time = const_jump_time;
-    speed_increment = 0;
-    obstacle_distance = 5;
-    addText("    Game Over\nPress W to restart", {
-        x: 1,
-        y: 2,
-        color: color`2`
+    clearTile(0, 0);
+    clearTile(0, 1);
+    clearTimeout(tick_timer);
+    addText("Press w to Start", {
+        x: 2,
+        y: 4,
+        color: color`3`
+    });
+    addText("Score: " + score.toString(), {
+        x: 2,
+        y: 6,
+        color: color`3`
     });
     playTune(gameOverSound);
-    waiting = true;
-    setTimeout(() => { waiting = false; }, 2000);
 }
 
 addText("Press W to start", {
